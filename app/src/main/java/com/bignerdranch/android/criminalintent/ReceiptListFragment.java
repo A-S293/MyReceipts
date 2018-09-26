@@ -17,7 +17,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
-public class CrimeListFragment extends Fragment {
+public class ReceiptListFragment extends Fragment {
 
     private static final String SAVED_SUBTITLE_VISIBLE = "subtitle";
 
@@ -34,7 +34,7 @@ public class CrimeListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_crime_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_receipt_list, container, false);
 
         mCrimeRecyclerView = (RecyclerView) view
                 .findViewById(R.id.crime_recycler_view);
@@ -64,7 +64,7 @@ public class CrimeListFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.fragment_crime_list, menu);
+        inflater.inflate(R.menu.fragment_receipt_list, menu);
 
         MenuItem subtitleItem = menu.findItem(R.id.show_subtitle);
         if (mSubtitleVisible) {
@@ -78,9 +78,9 @@ public class CrimeListFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.new_crime:
-                Crime crime = new Crime();
-                CrimeLab.get(getActivity()).addCrime(crime);
-                Intent intent = CrimePagerActivity
+                Receipt crime = new Receipt();
+                ReceiptLab.get(getActivity()).addCrime(crime);
+                Intent intent = ReceiptPagerActivity
                         .newIntent(getActivity(), crime.getId());
                 startActivity(intent);
                 return true;
@@ -95,8 +95,8 @@ public class CrimeListFragment extends Fragment {
     }
 
     private void updateSubtitle() {
-        CrimeLab crimeLab = CrimeLab.get(getActivity());
-        int crimeCount = crimeLab.getCrimes().size();
+        ReceiptLab receiptLab = ReceiptLab.get(getActivity());
+        int crimeCount = receiptLab.getCrimes().size();
         String subtitle = getString(R.string.subtitle_format, crimeCount);
 
         if (!mSubtitleVisible) {
@@ -108,8 +108,8 @@ public class CrimeListFragment extends Fragment {
     }
 
     private void updateUI() {
-        CrimeLab crimeLab = CrimeLab.get(getActivity());
-        List<Crime> crimes = crimeLab.getCrimes();
+        ReceiptLab receiptLab = ReceiptLab.get(getActivity());
+        List<Receipt> crimes = receiptLab.getCrimes();
 
         if (mAdapter == null) {
             mAdapter = new CrimeAdapter(crimes);
@@ -125,14 +125,14 @@ public class CrimeListFragment extends Fragment {
     private class CrimeHolder extends RecyclerView.ViewHolder
             implements View.OnClickListener {
 
-        private Crime mCrime;
+        private Receipt mCrime;
 
         private TextView mTitleTextView;
         private TextView mDateTextView;
         private ImageView mSolvedImageView;
 
         public CrimeHolder(LayoutInflater inflater, ViewGroup parent) {
-            super(inflater.inflate(R.layout.list_item_crime, parent, false));
+            super(inflater.inflate(R.layout.list_item_receipt, parent, false));
             itemView.setOnClickListener(this);
 
             mTitleTextView = (TextView) itemView.findViewById(R.id.crime_title);
@@ -140,7 +140,7 @@ public class CrimeListFragment extends Fragment {
             mSolvedImageView = (ImageView) itemView.findViewById(R.id.crime_solved);
         }
 
-        public void bind(Crime crime) {
+        public void bind(Receipt crime) {
             mCrime = crime;
             mTitleTextView.setText(mCrime.getTitle());
             mDateTextView.setText(mCrime.getDate().toString());
@@ -149,16 +149,16 @@ public class CrimeListFragment extends Fragment {
 
         @Override
         public void onClick(View view) {
-            Intent intent = CrimePagerActivity.newIntent(getActivity(), mCrime.getId());
+            Intent intent = ReceiptPagerActivity.newIntent(getActivity(), mCrime.getId());
             startActivity(intent);
         }
     }
 
     private class CrimeAdapter extends RecyclerView.Adapter<CrimeHolder> {
 
-        private List<Crime> mCrimes;
+        private List<Receipt> mCrimes;
 
-        public CrimeAdapter(List<Crime> crimes) {
+        public CrimeAdapter(List<Receipt> crimes) {
             mCrimes = crimes;
         }
 
@@ -170,7 +170,7 @@ public class CrimeListFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(CrimeHolder holder, int position) {
-            Crime crime = mCrimes.get(position);
+            Receipt crime = mCrimes.get(position);
             holder.bind(crime);
         }
 
@@ -179,7 +179,7 @@ public class CrimeListFragment extends Fragment {
             return mCrimes.size();
         }
 
-        public void setCrimes(List<Crime> crimes) {
+        public void setCrimes(List<Receipt> crimes) {
             mCrimes = crimes;
         }
     }

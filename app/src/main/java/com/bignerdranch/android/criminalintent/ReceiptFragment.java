@@ -33,7 +33,7 @@ import java.util.UUID;
 
 import static android.widget.CompoundButton.*;
 
-public class CrimeFragment extends Fragment {
+public class ReceiptFragment extends Fragment {
 
     private static final String ARG_CRIME_ID = "crime_id";
     private static final String DIALOG_DATE = "DialogDate";
@@ -42,7 +42,7 @@ public class CrimeFragment extends Fragment {
     private static final int REQUEST_CONTACT = 1;
     private static final int REQUEST_PHOTO = 2;
 
-    private Crime mCrime;
+    private Receipt mCrime;
     private File mPhotoFile;
     private EditText mTitleField;
     private Button mDateButton;
@@ -53,11 +53,11 @@ public class CrimeFragment extends Fragment {
     private ImageView mPhotoView;
 
 
-    public static CrimeFragment newInstance(UUID crimeId) {
+    public static ReceiptFragment newInstance(UUID crimeId) {
         Bundle args = new Bundle();
         args.putSerializable(ARG_CRIME_ID, crimeId);
 
-        CrimeFragment fragment = new CrimeFragment();
+        ReceiptFragment fragment = new ReceiptFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -66,14 +66,14 @@ public class CrimeFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         UUID crimeId = (UUID) getArguments().getSerializable(ARG_CRIME_ID);
-        mCrime = CrimeLab.get(getActivity()).getCrime(crimeId);
-        mPhotoFile = CrimeLab.get(getActivity()).getPhotoFile(mCrime);
+        mCrime = ReceiptLab.get(getActivity()).getCrime(crimeId);
+        mPhotoFile = ReceiptLab.get(getActivity()).getPhotoFile(mCrime);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_crime, container, false);
+        View v = inflater.inflate(R.layout.fragment_receipt, container, false);
 
         mTitleField = (EditText) v.findViewById(R.id.crime_title);
         mTitleField.setText(mCrime.getTitle());
@@ -102,7 +102,7 @@ public class CrimeFragment extends Fragment {
                 FragmentManager manager = getFragmentManager();
                 DatePickerFragment dialog = DatePickerFragment
                         .newInstance(mCrime.getDate());
-                dialog.setTargetFragment(CrimeFragment.this, REQUEST_DATE);
+                dialog.setTargetFragment(ReceiptFragment.this, REQUEST_DATE);
                 dialog.show(manager, DIALOG_DATE);
             }
         });
@@ -185,7 +185,7 @@ public class CrimeFragment extends Fragment {
     public void onPause() {
         super.onPause();
 
-        CrimeLab.get(getActivity())
+        ReceiptLab.get(getActivity())
                 .updateCrime(mCrime);
     }
 

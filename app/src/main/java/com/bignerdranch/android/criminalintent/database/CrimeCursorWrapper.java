@@ -3,7 +3,7 @@ package com.bignerdranch.android.criminalintent.database;
 import android.database.Cursor;
 import android.database.CursorWrapper;
 
-import com.bignerdranch.android.criminalintent.Crime;
+import com.bignerdranch.android.criminalintent.Receipt;
 import com.bignerdranch.android.criminalintent.database.CrimeDbSchema.CrimeTable;
 
 import java.util.Date;
@@ -17,14 +17,14 @@ public class CrimeCursorWrapper extends CursorWrapper {
         super(cursor);
     }
 
-    public Crime getCrime() {
+    public Receipt getCrime() {
         String uuidString = getString(getColumnIndex(Cols.UUID));
         String title = getString(getColumnIndex(Cols.TITLE));
         long date = getLong(getColumnIndex(Cols.DATE));
         int isSolved = getInt(getColumnIndex(Cols.SOLVED));
         String suspect = getString(getColumnIndex(CrimeTable.Cols.SUSPECT));
 
-        Crime crime = new Crime(UUID.fromString(uuidString));
+        Receipt crime = new Receipt(UUID.fromString(uuidString));
         crime.setTitle(title);
         crime.setDate(new Date(date));
         crime.setSolved(isSolved != 0);

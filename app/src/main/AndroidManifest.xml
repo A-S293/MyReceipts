@@ -12,7 +12,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".CrimeListActivity">
+        <activity android:name=".ReceiptListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -20,8 +20,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".CrimePagerActivity"
-            android:parentActivityName=".CrimeListActivity">
+            android:name=".ReceiptPagerActivity"
+            android:parentActivityName=".ReceiptListActivity">
         </activity>
         <provider
             android:name="android.support.v4.content.FileProvider"

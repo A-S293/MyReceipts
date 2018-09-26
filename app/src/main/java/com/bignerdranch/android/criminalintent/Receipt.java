@@ -3,7 +3,7 @@ package com.bignerdranch.android.criminalintent;
 import java.util.Date;
 import java.util.UUID;
 
-public class Crime {
+public class Receipt {
 
     private UUID mId;
     private String mTitle;
@@ -11,11 +11,11 @@ public class Crime {
     private boolean mSolved;
     private String mSuspect;
 
-    public Crime() {
+    public Receipt() {
         this(UUID.randomUUID());
     }
 
-    public Crime(UUID id) {
+    public Receipt(UUID id) {
         mId = id;
         mDate = new Date();
     }
