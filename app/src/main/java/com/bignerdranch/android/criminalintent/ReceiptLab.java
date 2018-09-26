@@ -5,16 +5,16 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.bignerdranch.android.criminalintent.database.CrimeBaseHelper;
-import com.bignerdranch.android.criminalintent.database.CrimeCursorWrapper;
-import com.bignerdranch.android.criminalintent.database.CrimeDbSchema.CrimeTable;
+import com.bignerdranch.android.criminalintent.database.ReceiptBaseHelper;
+import com.bignerdranch.android.criminalintent.database.ReceiptCursorWrapper;
+import com.bignerdranch.android.criminalintent.database.ReceiptDbSchema.ReceiptTable;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import static com.bignerdranch.android.criminalintent.database.CrimeDbSchema.CrimeTable.Cols.*;
+import static com.bignerdranch.android.criminalintent.database.ReceiptDbSchema.ReceiptTable.Cols.*;
 
 public class ReceiptLab {
     private static ReceiptLab sReceiptLab;
@@ -31,34 +31,34 @@ public class ReceiptLab {
 
     private ReceiptLab(Context context) {
         mContext = context.getApplicationContext();
-        mDatabase = new CrimeBaseHelper(mContext)
+        mDatabase = new ReceiptBaseHelper(mContext)
                 .getWritableDatabase();
 
     }
 
-    public void addCrime(Receipt c) {
+    public void addReceipt(Receipt c) {
         ContentValues values = getContentValues(c);
-        mDatabase.insert(CrimeTable.NAME, null, values);
+        mDatabase.insert(ReceiptTable.NAME, null, values);
     }
 
-    public List<Receipt> getCrimes() {
-        List<Receipt> crimes = new ArrayList<>();
-        CrimeCursorWrapper cursor = queryCrimes(null, null);
+    public List<Receipt> getReceipts() {
+        List<Receipt> receipts = new ArrayList<>();
+        ReceiptCursorWrapper cursor = queryReceipts(null, null);
         try {
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
-                crimes.add(cursor.getCrime());
+                receipts.add(cursor.getReceipt());
                 cursor.moveToNext();
             }
         } finally {
             cursor.close();
         }
-        return crimes;
+        return receipts;
     }
 
-    public Receipt getCrime(UUID id) {
-        CrimeCursorWrapper cursor = queryCrimes(
-                CrimeTable.Cols.UUID + " = ?",
+    public Receipt getReceipt(UUID id) {
+        ReceiptCursorWrapper cursor = queryReceipts(
+                ReceiptTable.Cols.UUID + " = ?",
                 new String[]{id.toString()}
         );
         try {
@@ -66,28 +66,28 @@ public class ReceiptLab {
                 return null;
             }
             cursor.moveToFirst();
-            return cursor.getCrime();
+            return cursor.getReceipt();
         } finally {
             cursor.close();
         }
     }
 
-    public File getPhotoFile(Receipt crime) {
+    public File getPhotoFile(Receipt receipt) {
         File filesDir = mContext.getFilesDir();
-        return new File(filesDir, crime.getPhotoFilename());
+        return new File(filesDir, receipt.getPhotoFilename());
     }
 
-    public void updateCrime(Receipt crime) {
-        String uuidString = crime.getId().toString();
-        ContentValues values = getContentValues(crime);
-        mDatabase.update(CrimeTable.NAME, values,
-                CrimeTable.Cols.UUID + " = ?",
+    public void updateReceipt(Receipt receipt) {
+        String uuidString = receipt.getId().toString();
+        ContentValues values = getContentValues(receipt);
+        mDatabase.update(ReceiptTable.NAME, values,
+                ReceiptTable.Cols.UUID + " = ?",
                 new String[]{uuidString});
     }
 
-    private CrimeCursorWrapper queryCrimes(String whereClause, String[] whereArgs) {
+    private ReceiptCursorWrapper queryReceipts(String whereClause, String[] whereArgs) {
         Cursor cursor = mDatabase.query(
-                CrimeTable.NAME,
+                ReceiptTable.NAME,
                 null, // Columns - null selects all columns
                 whereClause,
                 whereArgs,
@@ -95,16 +95,16 @@ public class ReceiptLab {
                 null, // having
                 null  // orderBy
         );
-        return new CrimeCursorWrapper(cursor);
+        return new ReceiptCursorWrapper(cursor);
     }
 
-    private static ContentValues getContentValues(Receipt crime) {
+    private static ContentValues getContentValues(Receipt receipt) {
         ContentValues values = new ContentValues();
-        values.put(UUID, crime.getId().toString());
-        values.put(TITLE, crime.getTitle());
-        values.put(DATE, crime.getDate().getTime());
-        values.put(SOLVED, crime.isSolved() ? 1 : 0);
-        values.put(CrimeTable.Cols.SUSPECT, crime.getSuspect());
+        values.put(UUID, receipt.getId().toString());
+        values.put(TITLE, receipt.getTitle());
+        values.put(DATE, receipt.getDate().getTime());
+        values.put(SOLVED, receipt.isSolved() ? 1 : 0);
+        values.put(ReceiptTable.Cols.SUSPECT, receipt.getSuspect());
 
         return values;
     }

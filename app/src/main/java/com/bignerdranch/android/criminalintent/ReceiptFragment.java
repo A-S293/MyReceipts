@@ -35,14 +35,14 @@ import static android.widget.CompoundButton.*;
 
 public class ReceiptFragment extends Fragment {
 
-    private static final String ARG_CRIME_ID = "crime_id";
+    private static final String ARG_RECEIPT_ID = "receipt_id";
     private static final String DIALOG_DATE = "DialogDate";
 
     private static final int REQUEST_DATE = 0;
     private static final int REQUEST_CONTACT = 1;
     private static final int REQUEST_PHOTO = 2;
 
-    private Receipt mCrime;
+    private Receipt mReceipt;
     private File mPhotoFile;
     private EditText mTitleField;
     private Button mDateButton;
@@ -53,9 +53,9 @@ public class ReceiptFragment extends Fragment {
     private ImageView mPhotoView;
 
 
-    public static ReceiptFragment newInstance(UUID crimeId) {
+    public static ReceiptFragment newInstance(UUID receiptId) {
         Bundle args = new Bundle();
-        args.putSerializable(ARG_CRIME_ID, crimeId);
+        args.putSerializable(ARG_RECEIPT_ID, receiptId);
 
         ReceiptFragment fragment = new ReceiptFragment();
         fragment.setArguments(args);
@@ -65,9 +65,9 @@ public class ReceiptFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        UUID crimeId = (UUID) getArguments().getSerializable(ARG_CRIME_ID);
-        mCrime = ReceiptLab.get(getActivity()).getCrime(crimeId);
-        mPhotoFile = ReceiptLab.get(getActivity()).getPhotoFile(mCrime);
+        UUID receiptId = (UUID) getArguments().getSerializable(ARG_RECEIPT_ID);
+        mReceipt = ReceiptLab.get(getActivity()).getReceipt(receiptId);
+        mPhotoFile = ReceiptLab.get(getActivity()).getPhotoFile(mReceipt);
     }
 
     @Override
@@ -75,8 +75,8 @@ public class ReceiptFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_receipt, container, false);
 
-        mTitleField = (EditText) v.findViewById(R.id.crime_title);
-        mTitleField.setText(mCrime.getTitle());
+        mTitleField = (EditText) v.findViewById(R.id.receipt_title);
+        mTitleField.setText(mReceipt.getTitle());
         mTitleField.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -85,7 +85,7 @@ public class ReceiptFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                mCrime.setTitle(s.toString());
+                mReceipt.setTitle(s.toString());
             }
 
             @Override
@@ -94,37 +94,37 @@ public class ReceiptFragment extends Fragment {
             }
         });
 
-        mDateButton = (Button) v.findViewById(R.id.crime_date);
+        mDateButton = (Button) v.findViewById(R.id.receipt_date);
         updateDate();
         mDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 FragmentManager manager = getFragmentManager();
                 DatePickerFragment dialog = DatePickerFragment
-                        .newInstance(mCrime.getDate());
+                        .newInstance(mReceipt.getDate());
                 dialog.setTargetFragment(ReceiptFragment.this, REQUEST_DATE);
                 dialog.show(manager, DIALOG_DATE);
             }
         });
 
-        mSolvedCheckbox = (CheckBox) v.findViewById(R.id.crime_solved);
-        mSolvedCheckbox.setChecked(mCrime.isSolved());
+        mSolvedCheckbox = (CheckBox) v.findViewById(R.id.receipt_solved);
+        mSolvedCheckbox.setChecked(mReceipt.isSolved());
         mSolvedCheckbox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, 
                     boolean isChecked) {
-                mCrime.setSolved(isChecked);
+                mReceipt.setSolved(isChecked);
             }
         });
 
-        mReportButton = (Button) v.findViewById(R.id.crime_report);
+        mReportButton = (Button) v.findViewById(R.id.receipt_report);
         mReportButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent i = new Intent(Intent.ACTION_SEND);
                 i.setType("text/plain");
-                i.putExtra(Intent.EXTRA_TEXT, getCrimeReport());
+                i.putExtra(Intent.EXTRA_TEXT, getReceiptReport());
                 i.putExtra(Intent.EXTRA_SUBJECT,
-                        getString(R.string.crime_report_subject));
+                        getString(R.string.receipt_report_subject));
                 i = Intent.createChooser(i, getString(R.string.send_report));
                 startActivity(i);
             }
@@ -132,14 +132,14 @@ public class ReceiptFragment extends Fragment {
 
         final Intent pickContact = new Intent(Intent.ACTION_PICK,
                 ContactsContract.Contacts.CONTENT_URI);
-        mSuspectButton = (Button) v.findViewById(R.id.crime_suspect);
+        mSuspectButton = (Button) v.findViewById(R.id.receipt_suspect);
         mSuspectButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 startActivityForResult(pickContact, REQUEST_CONTACT);
             }
         });
-        if (mCrime.getSuspect() != null) {
-            mSuspectButton.setText(mCrime.getSuspect());
+        if (mReceipt.getSuspect() != null) {
+            mSuspectButton.setText(mReceipt.getSuspect());
         }
 
         PackageManager packageManager = getActivity().getPackageManager();
@@ -148,7 +148,7 @@ public class ReceiptFragment extends Fragment {
             mSuspectButton.setEnabled(false);
         }
 
-        mPhotoButton = (ImageButton) v.findViewById(R.id.crime_camera);
+        mPhotoButton = (ImageButton) v.findViewById(R.id.receipt_camera);
         final Intent captureImage = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         boolean canTakePhoto = mPhotoFile != null &&
                 captureImage.resolveActivity(packageManager) != null;
@@ -175,7 +175,7 @@ public class ReceiptFragment extends Fragment {
             }
         });
 
-        mPhotoView = (ImageView) v.findViewById(R.id.crime_photo);
+        mPhotoView = (ImageView) v.findViewById(R.id.receipt_photo);
         updatePhotoView();
 
         return v;
@@ -186,7 +186,7 @@ public class ReceiptFragment extends Fragment {
         super.onPause();
 
         ReceiptLab.get(getActivity())
-                .updateCrime(mCrime);
+                .updateReceipt(mReceipt);
     }
 
     @Override
@@ -198,7 +198,7 @@ public class ReceiptFragment extends Fragment {
         if (requestCode == REQUEST_DATE) {
             Date date = (Date) data
                     .getSerializableExtra(DatePickerFragment.EXTRA_DATE);
-            mCrime.setDate(date);
+            mReceipt.setDate(date);
             updateDate();
         } else if (requestCode == REQUEST_CONTACT && data != null) {
             Uri contactUri = data.getData();
@@ -220,7 +220,7 @@ public class ReceiptFragment extends Fragment {
                 // that is your suspect's name.
                 c.moveToFirst();
                 String suspect = c.getString(0);
-                mCrime.setSuspect(suspect);
+                mReceipt.setSuspect(suspect);
                 mSuspectButton.setText(suspect);
             } finally {
                 c.close();
@@ -238,26 +238,26 @@ public class ReceiptFragment extends Fragment {
     }
 
     private void updateDate() {
-        mDateButton.setText(mCrime.getDate().toString());
+        mDateButton.setText(mReceipt.getDate().toString());
     }
 
-    private String getCrimeReport() {
+    private String getReceiptReport() {
         String solvedString = null;
-        if (mCrime.isSolved()) {
-            solvedString = getString(R.string.crime_report_solved);
+        if (mReceipt.isSolved()) {
+            solvedString = getString(R.string.receipt_report_solved);
         } else {
-            solvedString = getString(R.string.crime_report_unsolved);
+            solvedString = getString(R.string.receipt_report_unsolved);
         }
         String dateFormat = "EEE, MMM dd";
-        String dateString = DateFormat.format(dateFormat, mCrime.getDate()).toString();
-        String suspect = mCrime.getSuspect();
+        String dateString = DateFormat.format(dateFormat, mReceipt.getDate()).toString();
+        String suspect = mReceipt.getSuspect();
         if (suspect == null) {
-            suspect = getString(R.string.crime_report_no_suspect);
+            suspect = getString(R.string.receipt_report_no_suspect);
         } else {
-            suspect = getString(R.string.crime_report_suspect, suspect);
+            suspect = getString(R.string.receipt_report_suspect, suspect);
         }
-        String report = getString(R.string.crime_report,
-                mCrime.getTitle(), dateString, solvedString, suspect);
+        String report = getString(R.string.receipt_report,
+                mReceipt.getTitle(), dateString, solvedString, suspect);
         return report;
     }
 
