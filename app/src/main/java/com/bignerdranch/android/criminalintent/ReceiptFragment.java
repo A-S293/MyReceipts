@@ -94,6 +94,11 @@ public class ReceiptFragment extends Fragment {
             }
         });
 
+        mTitleField = (EditText) v.findViewById(R.id.store_title);
+
+        mTitleField.setText(mReceipt.getTitle());
+
+
         mDateButton = (Button) v.findViewById(R.id.receipt_date);
         updateDate();
         mDateButton.setOnClickListener(new View.OnClickListener() {
