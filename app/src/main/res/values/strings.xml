@@ -1,16 +1,22 @@
 <resources>
     <string name="app_name">MyReceipts</string>
     <string name="receipt_title_hint">Enter a title for the receipt.</string>
+    <string name="store_name_title_hint">Enter the name of the store.</string>
+    <string name="comment_title_hint">Enter a comment for the receipt.</string>
     <string name="receipt_title_label">Title</string>
-    <string name="receipt_details_label">Details</string>
-    <string name="receipt_solved_label">Solved</string>
+    <string name="receipt_details_label">Details:</string>
+    <string name="store_name_label">Store Name</string>
+    <string name="receipt_date_label">Date</string>
+    <string name="receipt_solved_label">Report</string>
     <string name="date_picker_title">Date of receipt:</string>
     <string name="new_receipt">New Receipt</string>
     <string name="show_subtitle">Show Subtitle</string>
     <string name="hide_subtitle">Hide Subtitle</string>
     <string name="subtitle_format">%1$d receipts</string>
-    <string name="receipt_suspect_text">Choose Suspect</string>
+    <string name="receipt_suspect_text">Send to Contact</string>
     <string name="receipt_report_text">Send Receipt Report</string>
+    <string name="store_location_label">Location</string>
+    <string name="comment">Comment</string>
     <string name="receipt_report">%1$s!
     The receipt was discovered on %2$s. %3$s, and %4$s
   </string>
