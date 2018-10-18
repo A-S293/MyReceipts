@@ -31,7 +31,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import static android.widget.CompoundButton.*;
+import static android.widget.CompoundButton.OnCheckedChangeListener;
 
 public class ReceiptFragment extends Fragment {
 
@@ -51,6 +51,7 @@ public class ReceiptFragment extends Fragment {
     private Button mSuspectButton;
     private ImageButton mPhotoButton;
     private ImageView mPhotoView;
+    private Button mDeleteButton;
 
 
     public static ReceiptFragment newInstance(UUID receiptId) {
@@ -116,7 +117,7 @@ public class ReceiptFragment extends Fragment {
         mSolvedCheckbox.setChecked(mReceipt.isSolved());
         mSolvedCheckbox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, 
+            public void onCheckedChanged(CompoundButton buttonView,
                     boolean isChecked) {
                 mReceipt.setSolved(isChecked);
             }
@@ -182,6 +183,14 @@ public class ReceiptFragment extends Fragment {
 
         mPhotoView = (ImageView) v.findViewById(R.id.receipt_photo);
         updatePhotoView();
+
+        mDeleteButton = (Button) v.findViewById(R.id.delete_button);
+        mDeleteButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                ReceiptLab.get(getActivity()).deleteReceipt(mReceipt.getId());
+                getActivity().finish();
+            }
+        });
 
         return v;
     }

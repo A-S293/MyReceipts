@@ -41,6 +41,12 @@ public class ReceiptLab {
         mDatabase.insert(ReceiptTable.NAME, null, values);
     }
 
+    public void deleteReceipt (UUID receiptId)
+    {
+        String uuidString = receiptId.toString();
+        mDatabase.delete(ReceiptTable.NAME, ReceiptTable.Cols.UUID + " = ?", new String[] {uuidString});
+    }
+
     public List<Receipt> getReceipts() {
         List<Receipt> receipts = new ArrayList<>();
         ReceiptCursorWrapper cursor = queryReceipts(null, null);

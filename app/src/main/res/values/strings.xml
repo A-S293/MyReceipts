@@ -16,6 +16,7 @@
     <string name="receipt_suspect_text">Send to Contact</string>
     <string name="receipt_report_text">Send Receipt Report</string>
     <string name="store_location_label">Location</string>
+    <string name="delete_button">Delete</string>
     <string name="comment">Comment</string>
     <string name="receipt_report">%1$s!
     The receipt was discovered on %2$s. %3$s, and %4$s

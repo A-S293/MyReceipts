@@ -59,4 +59,5 @@ public class Receipt {
     public String getPhotoFilename() {
         return "IMG_" + getId().toString() + ".jpg";
     }
+
 }

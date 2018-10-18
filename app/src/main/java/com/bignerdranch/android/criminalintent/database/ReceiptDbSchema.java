@@ -2,7 +2,7 @@ package com.bignerdranch.android.criminalintent.database;
 
 public class ReceiptDbSchema {
     public static final class ReceiptTable {
-        public static final String NAME = "crimes";
+        public static final String NAME = "Receipts";
 
         public static final class Cols {
             public static final String UUID = "uuid";
