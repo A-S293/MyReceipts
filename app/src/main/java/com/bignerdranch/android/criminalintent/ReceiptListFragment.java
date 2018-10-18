@@ -65,13 +65,7 @@ public class ReceiptListFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.fragment_receipt_list, menu);
-
-        MenuItem subtitleItem = menu.findItem(R.id.show_subtitle);
-        if (mSubtitleVisible) {
-            subtitleItem.setTitle(R.string.hide_subtitle);
-        } else {
-            subtitleItem.setTitle(R.string.show_subtitle);
-        }
+        MenuItem subtitleItem = menu.findItem(R.id.show_help);
     }
 
     @Override
@@ -84,7 +78,7 @@ public class ReceiptListFragment extends Fragment {
                         .newIntent(getActivity(), receipt.getId());
                 startActivity(intent);
                 return true;
-            case R.id.show_subtitle:
+            case R.id.show_help:
                 mSubtitleVisible = !mSubtitleVisible;
                 getActivity().invalidateOptionsMenu();
                 updateSubtitle();

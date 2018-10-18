@@ -10,8 +10,7 @@
     <string name="receipt_solved_label">Report</string>
     <string name="date_picker_title">Date of receipt:</string>
     <string name="new_receipt">New Receipt</string>
-    <string name="show_subtitle">Show Subtitle</string>
-    <string name="hide_subtitle">Hide Subtitle</string>
+    <string name="show_help">Help</string>
     <string name="subtitle_format">%1$d receipts</string>
     <string name="receipt_suspect_text">Send to Contact</string>
     <string name="receipt_report_text">Send Receipt Report</string>

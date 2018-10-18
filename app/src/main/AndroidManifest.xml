@@ -32,6 +32,10 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/files" />
         </provider>
+        <activity
+            android:name=".HelpWebPage"
+            android:parentActivityName=".ReceiptListActivity">
+        </activity>
     </application>
 
 </manifest>
