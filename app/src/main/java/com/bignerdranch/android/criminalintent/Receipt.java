@@ -10,6 +10,7 @@ public class Receipt {
     private Date mDate;
     private boolean mSolved;
     private String mSuspect;
+    private String mLocation;
 
     public Receipt() {
         this(UUID.randomUUID());
@@ -54,6 +55,14 @@ public class Receipt {
 
     public void setSuspect(String suspect) {
         mSuspect = suspect;
+    }
+
+    public String getLocation() {
+        return mLocation;
+    }
+
+    public void setLocation(String mLocation) {
+        this.mLocation = mLocation;
     }
 
     public String getPhotoFilename() {

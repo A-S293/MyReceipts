@@ -23,12 +23,15 @@ public class ReceiptCursorWrapper extends CursorWrapper {
         long date = getLong(getColumnIndex(Cols.DATE));
         int isSolved = getInt(getColumnIndex(Cols.SOLVED));
         String suspect = getString(getColumnIndex(ReceiptTable.Cols.SUSPECT));
+        String location = getString(getColumnIndex(Cols.LOCATION));
+
 
         Receipt receipt = new Receipt(UUID.fromString(uuidString));
         receipt.setTitle(title);
         receipt.setDate(new Date(date));
         receipt.setSolved(isSolved != 0);
         receipt.setSuspect(suspect);
+        receipt.setLocation(location);
 
         return receipt;
     }

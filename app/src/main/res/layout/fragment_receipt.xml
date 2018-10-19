@@ -107,10 +107,18 @@
         android:layout_height="wrap_content"
         android:text="@string/store_location_label"/>
 
-    <Button
+    <TextView
         android:id="@+id/store_location"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:text="@string/receipt_solved_label"/>
+
+    <Button
+        android:id="@+id/show_map"
+        android:layout_width="100dp"
+        android:layout_gravity="right"
+        android:layout_height="50dp"
+        android:text="@string/show_map" />
 
     <CheckBox
         android:id="@+id/receipt_solved"
