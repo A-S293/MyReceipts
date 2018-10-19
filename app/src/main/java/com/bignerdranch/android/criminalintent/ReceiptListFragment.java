@@ -79,9 +79,9 @@ public class ReceiptListFragment extends Fragment {
                 startActivity(intent);
                 return true;
             case R.id.show_help:
-                mSubtitleVisible = !mSubtitleVisible;
-                getActivity().invalidateOptionsMenu();
-                updateSubtitle();
+                Intent i = new Intent(getActivity(), HelpWebPage.class);
+                startActivity(i);
+
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
