@@ -24,6 +24,8 @@ public class ReceiptBaseHelper extends SQLiteOpenHelper {
                 ReceiptTable.Cols.DATE + ", " +
                 ReceiptTable.Cols.SOLVED + ", " +
                 ReceiptTable.Cols.LOCATION + ", " +
+                ReceiptTable.Cols.LONGITUDE + ", " +
+                ReceiptTable.Cols.LATITUDE + ", " +
                 ReceiptTable.Cols.SUSPECT +
                 ")"
         );

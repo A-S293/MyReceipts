@@ -11,6 +11,8 @@ public class Receipt {
     private boolean mSolved;
     private String mSuspect;
     private String mLocation;
+    private String mLatitude;
+    private String mLongitude;
 
     public Receipt() {
         this(UUID.randomUUID());
@@ -67,6 +69,14 @@ public class Receipt {
 
     public String getPhotoFilename() {
         return "IMG_" + getId().toString() + ".jpg";
+    }
+
+    public void setLongitude(String mLongitude) {
+        this.mLongitude = mLongitude;
+    }
+
+    public void setLatitude(String mLatitude) {
+        this.mLatitude = mLatitude;
     }
 
 }

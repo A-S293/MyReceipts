@@ -61,6 +61,7 @@ public class ReceiptFragment extends Fragment {
     private Button mReportButton;
     private Button mSuspectButton;
     private ImageButton mPhotoButton;
+    private Button mViewMapButton;
     private ImageView mPhotoView;
     private Button mDeleteButton;
     private GoogleApiClient mClient;
@@ -103,6 +104,8 @@ public class ReceiptFragment extends Fragment {
                                 public void onLocationChanged(Location location) {
                                     Log.i("LOCATION", "Got a fix: " + location);
                                     mReceipt.setLocation(location.toString());
+                                    //mReceipt.setLatitude(location.getLatitude());
+                                    //mReceipt.setLongitude(location.getLongitude());
                                     mLocation.setText(mReceipt.getLocation());
                                 }
                             });
@@ -251,6 +254,14 @@ public class ReceiptFragment extends Fragment {
             public void onClick(View v) {
                 ReceiptLab.get(getActivity()).deleteReceipt(mReceipt.getId());
                 getActivity().finish();
+
+            }
+        });
+
+        mViewMapButton = (Button) v.findViewById(R.id.show_map);
+        mViewMapButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                //startActivity(activity_maps);
             }
         });
 
