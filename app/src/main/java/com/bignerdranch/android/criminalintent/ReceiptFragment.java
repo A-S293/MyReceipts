@@ -120,12 +120,14 @@ public class ReceiptFragment extends Fragment {
                 .build();
     }
 
+    // creating an onStart function to connect the client when onStart
     @Override
     public void onStart(){
         super.onStart();
         mClient.connect();
     }
 
+    // creating an onStop function to disconnect the client when onStop
     @Override
     public void onStop(){
         super.onStop();
@@ -138,6 +140,7 @@ public class ReceiptFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_receipt, container, false);
 
+        // Creating A TitleField where one can edit and update the tile of the individual receipts
         mTitleField = (EditText) v.findViewById(R.id.receipt_title);
         mTitleField.setText(mReceipt.getTitle());
         mTitleField.addTextChangedListener(new TextWatcher() {
@@ -157,14 +160,21 @@ public class ReceiptFragment extends Fragment {
             }
         });
 
+        // Creating an Editable TextField for the Editable Text Store Title
         mTitleField = (EditText) v.findViewById(R.id.store_title);
 
+        // Sets the TextField
         mTitleField.setText(mReceipt.getTitle());
 
+        // Creating A location variable that acts as a object that can be seen in TextView
         mLocation =  (TextView) v.findViewById(R.id.store_location);
 
+        // Sets the Location Text
         mLocation.setText(mReceipt.getLocation());
 
+        // Create A Button to change the data that calls upon the DatePickerFragment
+        // Which allows you to change the Date by selecting the day and month in which
+        // the receipt is create
         mDateButton = (Button) v.findViewById(R.id.receipt_date);
         updateDate();
         mDateButton.setOnClickListener(new View.OnClickListener() {
@@ -178,6 +188,8 @@ public class ReceiptFragment extends Fragment {
             }
         });
 
+        // Create a Solved Checkbox button that is called report in the ViewPort which
+        // Which is used to report the receipt
         mSolvedCheckbox = (CheckBox) v.findViewById(R.id.receipt_solved);
         mSolvedCheckbox.setChecked(mReceipt.isSolved());
         mSolvedCheckbox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
@@ -219,12 +231,14 @@ public class ReceiptFragment extends Fragment {
             mSuspectButton.setEnabled(false);
         }
 
+        // Create A take Photo Button
         mPhotoButton = (ImageButton) v.findViewById(R.id.receipt_camera);
         final Intent captureImage = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         boolean canTakePhoto = mPhotoFile != null &&
                 captureImage.resolveActivity(packageManager) != null;
         mPhotoButton.setEnabled(canTakePhoto);
 
+        // On Click take a photo
         mPhotoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -233,6 +247,7 @@ public class ReceiptFragment extends Fragment {
                         mPhotoFile);
                 captureImage.putExtra(MediaStore.EXTRA_OUTPUT, uri);
 
+                // Run the Picture Utils Activity
                 List<ResolveInfo> cameraActivities = getActivity()
                         .getPackageManager().queryIntentActivities(captureImage,
                                 PackageManager.MATCH_DEFAULT_ONLY);
@@ -241,7 +256,7 @@ public class ReceiptFragment extends Fragment {
                     getActivity().grantUriPermission(activity.activityInfo.packageName,
                             uri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
                 }
-
+                // Run the Activity and capture the Image
                 startActivityForResult(captureImage, REQUEST_PHOTO);
             }
         });
@@ -249,15 +264,18 @@ public class ReceiptFragment extends Fragment {
         mPhotoView = (ImageView) v.findViewById(R.id.receipt_photo);
         updatePhotoView();
 
+        // Create A Button to Delete the Receipt the user is currently on
         mDeleteButton = (Button) v.findViewById(R.id.delete_button);
         mDeleteButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 ReceiptLab.get(getActivity()).deleteReceipt(mReceipt.getId());
+                // Run the Activity
                 getActivity().finish();
 
             }
         });
 
+        // Create A Button to open the Map View aka (View Map Button)
         mViewMapButton = (Button) v.findViewById(R.id.show_map);
         mViewMapButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
@@ -268,6 +286,7 @@ public class ReceiptFragment extends Fragment {
         return v;
     }
 
+    // Create an onPause function that updates calls the ReceiptLab Activity and updates the Receipt (mReceipt)
     @Override
     public void onPause() {
         super.onPause();
@@ -276,17 +295,21 @@ public class ReceiptFragment extends Fragment {
                 .updateReceipt(mReceipt);
     }
 
+    // Creates an onActivityResult return function
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode != Activity.RESULT_OK) {
             return;
         }
 
+        // Creates the Date Request Code and Updates the Receipts Date
         if (requestCode == REQUEST_DATE) {
             Date date = (Date) data
                     .getSerializableExtra(DatePickerFragment.EXTRA_DATE);
             mReceipt.setDate(date);
             updateDate();
+
+        // Creates the Contact Request Code and Updates the Contacts you send the receipts to
         } else if (requestCode == REQUEST_CONTACT && data != null) {
             Uri contactUri = data.getData();
             // Specify which fields you want your query to return
@@ -324,10 +347,13 @@ public class ReceiptFragment extends Fragment {
         }
     }
 
+    // The update Date function and setting the date text in the Receipt List
     private void updateDate() {
         mDateButton.setText(mReceipt.getDate().toString());
     }
 
+    // The get update ReceiptReport updates the report when the report but is checked
+    // to send the report
     private String getReceiptReport() {
         String solvedString = null;
         if (mReceipt.isSolved()) {
@@ -348,6 +374,7 @@ public class ReceiptFragment extends Fragment {
         return report;
     }
 
+    // Updates the PhotoView
     private void updatePhotoView() {
         if (mPhotoFile == null || !mPhotoFile.exists()) {
             mPhotoView.setImageDrawable(null);
